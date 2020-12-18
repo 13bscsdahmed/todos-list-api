@@ -1,0 +1,284 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1"
+    }
+  ],
+  "info": {
+    "description": "API Spec Doc for Pluck Tv App",
+    "version": "1.0.0",
+    "title": "Pluck TV API 3.0",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "User",
+      "description": "Everything about the Users"
+    }
+  ],
+  "paths": {
+    "/user/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Login user",
+        "description": "Logs in user into the system",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userLoginRequest"
+              },
+              "example": {
+                "email": "admin@test.co",
+                "password": "test@Pass1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "User logged in successfully",
+                  "data" : {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid email/password supplied"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/signup": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Sign up user",
+        "description": "Signs up user into the system",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userSignupRequest"
+              },
+              "example": {
+                "name": "John Doe",
+                "email": "johndoe@gmail.com",
+                "password": "test@Pass1",
+                "gender": "male"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "User signed up successfully.",
+                  "data" : {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to sign up user"
+          },
+          "403": {
+            "description": "Forbidden request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/verify": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Verify user",
+        "description": "Verifies signed up user for the system",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userVerifyRequest"
+              },
+              "example": {
+                "email": "johndoe@gmail.com",
+                "key": "$2b$10$jtedyYsE/lFKXfcgzMRN9Oc/wUDEL/Ivy"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "User verified successfully",
+                  "data" : {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to verify user"
+          },
+          "404": {
+            "description": "Failed to verify user"
+          },
+          "403": {
+            "description": "Forbidden request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "userLoginRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "userSignupRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password",
+          "gender"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          }
+        }
+      },
+      "userVerifyRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "key"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          }
+        }
+      },
+      "genericResponse": {
+        "properties": {
+          "success": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "userLogin": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/userLoginRequest"
+            }
+          }
+        }
+      },
+      "userSignup": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/userSignupRequest"
+            }
+          }
+        }
+      },
+      "userVerify": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/userVerifyRequest"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "x-auth-token": {
+        "type": "apiKey",
+        "name": "x-auth-token",
+        "in": "header"
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

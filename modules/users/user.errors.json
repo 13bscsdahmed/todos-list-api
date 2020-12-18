@@ -1,0 +1,35 @@
+{
+  "1001": {
+    "msg": "Invalid email or password"
+  },
+  "1002": {
+    "msg": "Email is required"
+  },
+  "1003": {
+    "msg": "Email must be valid"
+  },
+  "1004": {
+    "msg": "Password is required"
+  },
+  "1005": {
+    "msg": "Password should be minimum eight characters and contain at least one number."
+  },
+  "1006": {
+    "msg": "Name is required"
+  },
+  "1007": {
+    "msg": "Gender is required"
+  },
+  "1008": {
+    "msg": "Gender must be male or female"
+  },
+  "1009": {
+    "msg": "Failed to sign up user"
+  },
+  "1010": {
+    "msg": "User with email already exists"
+  },
+  "1011": {
+    "msg": "Failed to login user"
+  }
+}
