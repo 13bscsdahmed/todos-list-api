@@ -1,8 +1,3 @@
-const fs = require('fs');
-const winston = require('../../config/winston');
-const bcrypt = require('bcrypt');
-const constants = require('../../config/constants');
-
 // Common utility functions that can be used by all modules.
 module.exports = {
   /**
@@ -21,29 +16,5 @@ module.exports = {
    */
   emailValidator(email) {
     return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
-  },
-  
-  /**
-   * Function to generate hash of string
-   * @param string: string to hash
-   * @param rounds: Number of rounds for salting
-   */
-  generateHash(string, rounds) {
-    return new Promise((resolve, reject) => {
-      // generate a salt
-      bcrypt.genSalt(rounds, (err, salt) => {
-        if (err) {
-          return reject(err);
-        }
-        // hash the password using our new salt
-        return bcrypt.hash(string, salt, (error, hash) => {
-          if (error) {
-            return reject(error);
-          }
-
-          return resolve(hash);
-        });
-      });
-    });
   },
 };
