@@ -4,5 +4,17 @@
   },
   "1002": {
     "msg": "Todo with the given id does not exist"
+  },
+  "1003": {
+    "msg": "An error occurred adding todo"
+  },
+  "1004": {
+    "msg": "An error occurred fetching todos"
+  },
+  "1005": {
+    "msg": "An error occurred updating todo"
+  },
+  "1006": {
+    "msg": "An error occurred deleting todo"
   }
 }

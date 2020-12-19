@@ -1,2 +1,8 @@
 {
+  "2001": {
+    "msg": "An error occurred fetching lists"
+  },
+  "2002": {
+    "msg": "An error occurred adding list"
+  }
 }

@@ -34,20 +34,26 @@ const checkIfTodoExists = (todoId) => {
 const addTodo = (todo, reqId) => {
   winston.debug(`ReqId: [${reqId}] addTodo() method starts for todo`);
   return new Promise((resolve, reject) => {
-    if (checkIfListExists(todo.listId)) {
-      const key = Todos.add({
-        listId: todo.listId,
-        title: todo.title,
-        dueDateTime: todo.dueDateTime,
-        description: todo.description,
-        createDateTime: Date.now(),
-        completionStatus: false,
-      });
-      const addedTodo = Todos.get(key);
-      resolve(addedTodo);
-    } else {
-      reject({ msgCode: '1001', status: 400 });
+    try {
+      if (checkIfListExists(todo.listId)) {
+        const key = Todos.add({
+          listId: todo.listId,
+          title: todo.title,
+          dueDateTime: todo.dueDateTime,
+          description: todo.description,
+          createDateTime: Date.now(),
+          completionStatus: false,
+        });
+        const addedTodo = Todos.get(key);
+        resolve(addedTodo);
+      } else {
+        reject({ msgCode: '1001', status: 400 });
+      }
+    } catch (err) {
+      winston.error(`ReqId: [${reqId}] An error occurred adding todo. Error: ${JSON.stringify(err)}`);
+      reject({ msgCode: '1003', status: 500 });
     }
+
   });
 };
 
@@ -60,25 +66,31 @@ const addTodo = (todo, reqId) => {
 const updateTodo = (todoId, todo, reqId) => {
   winston.debug(`ReqId: [${reqId}] updateTodo() method starts for todo with id: ${todoId}`);
   return new Promise((resolve, reject) => {
-    if (checkIfTodoExists(todoId)) {
-      const objtoUpdate = {};
-      if (todo.listId) objtoUpdate.listId = todo.listId;
-      if (todo.title) objtoUpdate.title = todo.title;
-      if (todo.dueDateTime) objtoUpdate.dueDateTime = todo.dueDateTime;
-      if (todo.description) objtoUpdate.description = todo.description;
-      if (todo.completionStatus) objtoUpdate.completionStatus = todo.completionStatus;
-      if (todo.attachments) objtoUpdate.attachments = todo.attachments;
-      Todos.update(todoId, {
-        listId: todo.listId,
-        title: todo.title,
-        dueDateTime: todo.dueDateTime,
-        description: todo.description,
-      });
-      const updatedTodo = Todos.get(todoId);
-      resolve(updatedTodo);
-    } else {
-      reject({ msgCode: '1002', status: 400 });
+    try {
+      if (checkIfTodoExists(todoId)) {
+        const objtoUpdate = {};
+        if (todo.listId) objtoUpdate.listId = todo.listId;
+        if (todo.title) objtoUpdate.title = todo.title;
+        if (todo.dueDateTime) objtoUpdate.dueDateTime = todo.dueDateTime;
+        if (todo.description) objtoUpdate.description = todo.description;
+        if (todo.completionStatus) objtoUpdate.completionStatus = todo.completionStatus;
+        if (todo.attachments) objtoUpdate.attachments = todo.attachments;
+        Todos.update(todoId, {
+          listId: todo.listId,
+          title: todo.title,
+          dueDateTime: todo.dueDateTime,
+          description: todo.description,
+        });
+        const updatedTodo = Todos.get(todoId);
+        resolve(updatedTodo);
+      } else {
+        reject({ msgCode: '1002', status: 400 });
+      }
+    } catch (err) {
+      winston.error(`ReqId: [${reqId}] An error occurred updating todo. Error: ${JSON.stringify(err)}`);
+      reject({ msgCode: '1005', status: 500 });
     }
+
   });
 };
 
@@ -90,11 +102,16 @@ const updateTodo = (todoId, todo, reqId) => {
 const deleteTodo = (todoId, reqId) => {
   winston.debug(`ReqId: [${reqId}] deleteTodo() method starts for todo with id: ${todoId}`);
   return new Promise((resolve, reject) => {
-    const removed = Todos.remove(todoId);
-    if (removed) {
-      resolve();
-    } else {
-      reject({ msgCode: '1002', status: 400 });
+    try {
+      const removed = Todos.remove(todoId);
+      if (removed) {
+        resolve();
+      } else {
+        reject({ msgCode: '1002', status: 400 });
+      }
+    } catch (err) {
+      winston.error(`ReqId: [${reqId}] An error occurred deleting todo. Error: ${JSON.stringify(err)}`);
+      reject({ msgCode: '1006', status: 500 });
     }
   });
 };
@@ -106,8 +123,13 @@ const deleteTodo = (todoId, reqId) => {
 const getAllTodos = (reqId) => {
   winston.debug(`ReqId: [${reqId}] getAllTodos() method starts`);
   return new Promise((resolve, reject) => {
-    const todos = Todos.all();
-    resolve(todos);
+    try {
+      const todos = Todos.all();
+      resolve(todos);
+    } catch (err) {
+      winston.error(`ReqId: [${reqId}] An error occurred fetching todos. Error: ${JSON.stringify(err)}`);
+      reject({ msgCode: '1004', status: 500 });
+    }
   });
 };
 

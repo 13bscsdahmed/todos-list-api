@@ -14,11 +14,16 @@ const Lists = new FlatDB.Collection('lists');
 const addList = (list, reqId) => {
   winston.debug(`ReqId: [${reqId}] addList() method starts`);
   return new Promise((resolve, reject) => {
-    const key = Lists.add({
-      description: 'X-Men',
-    });
-    const addedList = Lists.get(key);
-    resolve(addedList);
+    try {
+      const key = Lists.add({
+        title: list.title,
+      });
+      const addedList = Lists.get(key);
+      resolve(addedList);
+    } catch (err) {
+      winston.error(`ReqId: [${reqId}] An error occurred adding list. Error: ${JSON.stringify(err)}`);
+      reject({ msgCode: '2002', status: 500 });
+    }
   });
 };
 
@@ -29,8 +34,13 @@ const addList = (list, reqId) => {
 const getAllLists = (reqId) => {
   winston.debug(`ReqId: [${reqId}] getAllLists() method starts`);
   return new Promise((resolve, reject) => {
-    const lists = Lists.all();
-    resolve(lists);
+    try {
+      const lists = Lists.all();
+      resolve(lists);
+    } catch (err) {
+      winston.error(`ReqId: [${reqId}] An error occurred fetching lists. Error: ${JSON.stringify(err)}`);
+      reject({ msgCode: '2001', status: 500 });
+    }
   });
 };
 
