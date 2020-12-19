@@ -1,5 +1,8 @@
 {
   "1001": {
-    "msg": "Invalid email or password"
+    "msg": "List with the given id does not exist"
+  },
+  "1002": {
+    "msg": "Todo with the given id does not exist"
   }
 }

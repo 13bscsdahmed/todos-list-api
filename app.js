@@ -6,6 +6,8 @@ const uuid = require('uuid/v4');
 const winston = require('./config/winston');
 const constants = require('./config/constants');
 
+const FlatDB = require('flat-db');
+
 // Configuring the environment
 require('dotenv').config({
   path: '.env',
@@ -46,6 +48,12 @@ app.use((req, res, next) => {
   } else {
     next();
   }
+});
+
+
+// Configuring flat db
+FlatDB.configure({
+  dir: './storage',
 });
 
 // Configuring the request to append a unique id.

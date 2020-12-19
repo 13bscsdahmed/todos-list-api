@@ -6,9 +6,9 @@
     }
   ],
   "info": {
-    "description": "API Spec Doc for Pluck Tv App",
+    "description": "API Spec Doc for todos App",
     "version": "1.0.0",
-    "title": "Pluck TV API 3.0",
+    "title": "Todos Api",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"

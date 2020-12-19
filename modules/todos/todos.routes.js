@@ -2,13 +2,27 @@ const todosController = require('./todos.controller');
 const errorMiddleware = require('../common/error-middleware');
 const todosMiddleware = require('./todos.middleware');
 
-const resource = '/user';
+const resource = '/todos';
 
 module.exports = (app, version) => {
   app.post(
-    `${version}${resource}/login`,
-    todosMiddleware.validateLoginParameters,
+    `${version}${resource}`,
+    todosMiddleware.validateAddTodoParameters,
     errorMiddleware,
-    todosController.userLogin,
+    todosController.addTodo,
+  );
+  app.put(
+    `${version}${resource}/:todoId`,
+    todosMiddleware.validateUpdateTodoParameters,
+    errorMiddleware,
+    todosController.updateTodo,
+  );
+  app.delete(
+    `${version}${resource}/:todoId`,
+    todosController.deleteTodo,
+  );
+  app.get(
+    `${version}${resource}`,
+    todosController.getAllTodos,
   );
 };
