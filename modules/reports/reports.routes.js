@@ -4,7 +4,7 @@ const resource = '/reports';
 
 module.exports = (app, version) => {
   app.get(
-    `${version}${resource}/get-tasks-completed-per-day`,
+    `${version}${resource}/tasks-completed-per-day`,
     reportsController.fetchTaskCompletedPerDayReport,
   );
 };
