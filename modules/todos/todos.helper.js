@@ -42,7 +42,9 @@ const addTodo = (todo, reqId) => {
           dueDateTime: todo.dueDateTime,
           description: todo.description,
           createDateTime: Date.now(),
+          completionDateTime: 0,
           completionStatus: false,
+          attachments: [],
         });
         const addedTodo = Todos.get(key);
         resolve(addedTodo);
@@ -53,7 +55,6 @@ const addTodo = (todo, reqId) => {
       winston.error(`ReqId: [${reqId}] An error occurred adding todo. Error: ${JSON.stringify(err)}`);
       reject({ msgCode: '1003', status: 500 });
     }
-
   });
 };
 
@@ -67,30 +68,34 @@ const updateTodo = (todoId, todo, reqId) => {
   winston.debug(`ReqId: [${reqId}] updateTodo() method starts for todo with id: ${todoId}`);
   return new Promise((resolve, reject) => {
     try {
-      if (checkIfTodoExists(todoId)) {
+      const fetchedTodo = Todos.get(todoId);
+      if (fetchedTodo) {
         const objtoUpdate = {};
         if (todo.listId) objtoUpdate.listId = todo.listId;
         if (todo.title) objtoUpdate.title = todo.title;
         if (todo.dueDateTime) objtoUpdate.dueDateTime = todo.dueDateTime;
         if (todo.description) objtoUpdate.description = todo.description;
-        if (todo.completionStatus) objtoUpdate.completionStatus = todo.completionStatus;
+
+        // Completion status has been updated
+        if (todo.completionStatus !== fetchedTodo.completionStatus) {
+          objtoUpdate.completionStatus = todo.completionStatus;
+          if (todo.completionStatus) {
+            objtoUpdate.completionDateTime = Date.now();
+          } else {
+            objtoUpdate.completionDateTime = 0;
+          }
+        }
         if (todo.attachments) objtoUpdate.attachments = todo.attachments;
-        Todos.update(todoId, {
-          listId: todo.listId,
-          title: todo.title,
-          dueDateTime: todo.dueDateTime,
-          description: todo.description,
-        });
+        Todos.update(todoId, objtoUpdate);
         const updatedTodo = Todos.get(todoId);
         resolve(updatedTodo);
       } else {
-        reject({ msgCode: '1002', status: 400 });
+        reject({ msgCode: '1002', status: 404 });
       }
     } catch (err) {
       winston.error(`ReqId: [${reqId}] An error occurred updating todo. Error: ${JSON.stringify(err)}`);
       reject({ msgCode: '1005', status: 500 });
     }
-
   });
 };
 
@@ -107,7 +112,7 @@ const deleteTodo = (todoId, reqId) => {
       if (removed) {
         resolve();
       } else {
-        reject({ msgCode: '1002', status: 400 });
+        reject({ msgCode: '1002', status: 404 });
       }
     } catch (err) {
       winston.error(`ReqId: [${reqId}] An error occurred deleting todo. Error: ${JSON.stringify(err)}`);

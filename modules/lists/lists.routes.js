@@ -15,4 +15,8 @@ module.exports = (app, version) => {
     `${version}${resource}`,
     listsController.getAllLists,
   );
+  app.delete(
+    `${version}${resource}/:listId`,
+    listsController.deleteList,
+  );
 };

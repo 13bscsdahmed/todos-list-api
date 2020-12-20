@@ -39,4 +39,22 @@ module.exports = {
       next(error);
     });
   },
+  /**
+   * Controller function to delete list
+   * @param req
+   * @param res
+   * @param next
+   */
+  deleteList(req, res, next) {
+    listsHelper.deleteList(req.params.listId, req.reqId).then(() => {
+      res.status(201);
+      res.json({
+        success: 1,
+        message: responseMessages.listDeleted.success,
+        data: {},
+      });
+    }).catch((error) => {
+      next(error);
+    });
+  },
 };

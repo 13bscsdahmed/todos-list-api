@@ -6,5 +6,8 @@ module.exports = {
     listsFetched: {
       success: 'Lists fetched successfully.',
     },
+    listDeleted: {
+      success: 'List deleted successfully.',
+    },
   },
 };
