@@ -7,4 +7,5 @@ module.exports = {
     admin: 'ADMIN',
     moderator: 'MODERATOR',
   },
+  reportExpiryTime: 15 * 60 * 1000, // 15 minutes
 };
