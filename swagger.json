@@ -16,28 +16,38 @@
   },
   "tags": [
     {
-      "name": "User",
-      "description": "Everything about the Users"
+      "name": "Lists",
+      "description": "Everything about the lists"
+    },
+    {
+      "name": "Todos",
+      "description": "Everything about Todos"
+    },
+    {
+      "name": "Reports",
+      "description": "Everything about the reports"
     }
   ],
   "paths": {
-    "/user/login": {
+    "/todos": {
       "post": {
         "tags": [
-          "User"
+          "Todos"
         ],
-        "summary": "Login user",
-        "description": "Logs in user into the system",
+        "summary": "Add new todo item",
+        "description": "Add new todo item",
         "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/userLoginRequest"
+                "$ref": "#/components/schemas/addTodoRequest"
               },
               "example": {
-                "email": "admin@test.co",
-                "password": "test@Pass1"
+                "listId": "VM9LdJ1vudMBQ4rYxlJaIWqzujhtlyL6",
+                "title": "Finish breadcrumbs",
+                "description": "Finish breadcrumbs api and UI",
+                "dueDateTime": 1608363237
               }
             }
           }
@@ -52,120 +62,346 @@
                 },
                 "example": {
                   "success": 1,
-                  "message": "User logged in successfully",
-                  "data" : {}
+                  "message": "Todo added successfully",
+                  "data" : {
+                    "listId": "tLz7PyNkvXOXyXqBq9N7VusmIEMueZlU",
+                    "title": "Finish breadcrumbs",
+                    "dueDateTime": 1608363237,
+                    "description": "Finish breadcrumbs api and UI",
+                    "createDateTime": 1608492061069,
+                    "completionDateTime": 0,
+                    "completionStatus": false,
+                    "attachments": [],
+                    "_id_": "FvHduuG3mZFPfG10HRDkEXH7mk2283J4",
+                    "_ts_": 1608492061069
+                  }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid email/password supplied"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/user/signup": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Sign up user",
-        "description": "Signs up user into the system",
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/userSignupRequest"
-              },
-              "example": {
-                "name": "John Doe",
-                "email": "johndoe@gmail.com",
-                "password": "test@Pass1",
-                "gender": "male"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/genericResponse"
-                },
-                "example": {
-                  "success": 1,
-                  "message": "User signed up successfully.",
-                  "data" : {}
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Failed to sign up user"
-          },
-          "403": {
-            "description": "Forbidden request"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/user/verify": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Verify user",
-        "description": "Verifies signed up user for the system",
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/userVerifyRequest"
-              },
-              "example": {
-                "email": "johndoe@gmail.com",
-                "key": "$2b$10$jtedyYsE/lFKXfcgzMRN9Oc/wUDEL/Ivy"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/genericResponse"
-                },
-                "example": {
-                  "success": 1,
-                  "message": "User verified successfully",
-                  "data" : {}
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Failed to verify user"
           },
           "404": {
-            "description": "Failed to verify user"
-          },
-          "403": {
-            "description": "Forbidden request"
+            "description": "List with the given id does not exist"
           },
           "500": {
-            "description": "Internal server error"
+            "description": "An error occurred adding todo"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Todos"
+        ],
+        "summary": "Get all todos",
+        "description": "Get all todos",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "Todos fetched successfully.",
+                  "data" : [
+                    {
+                      "listId": "rO6KR3DJKYdbMBRvSC9IwODUSAPKXChD",
+                      "title": "test1",
+                      "dueDateTime": 1608363237,
+                      "createDateTime": 1608364687253,
+                      "completionStatus": false,
+                      "_id_": "McZmspyr77QznTuO26cRDDlMpDJGEHZh",
+                      "_ts_": 1608364687253
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred fetching todos"
+          }
+        }
+      }
+    },
+    "/todos/{todoId}": {
+      "put": {
+        "tags": [
+          "Todos"
+        ],
+        "summary": "Update todo",
+        "description": "Update todo",
+        "parameters": [
+          {
+            "name": "todoId",
+            "in": "path",
+            "required": true,
+            "description": "Id of todo to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateTodoRequest"
+              },
+              "example": {
+                "title": "updated title"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "Todo updated successfully.",
+                  "data" : {
+                    "listId": "VM9LdJ1vudMBQ4rYxlJaIWqzujhtlyL6",
+                    "title": "updated title",
+                    "dueDateTime": 1608363237,
+                    "description": "Finish breadcrumbs api and UI",
+                    "createDateTime": 1608405324165,
+                    "completionStatus": false,
+                    "_id_": "C77XJB5YOBDwZjl77yhJOoLDH3Q3kZva",
+                    "_ts_": 1608405588439
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Todo with the given id does not exist"
+          },
+          "500": {
+            "description": "An error occurred updating todo"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Todos"
+        ],
+        "summary": "Delete todo",
+        "description": "Delete todo",
+        "parameters": [
+          {
+            "name": "todoId",
+            "in": "path",
+            "required": true,
+            "description": "Id of todo to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "Todo deleted successfully.",
+                  "data" : {}
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Todo with the given id does not exist"
+          },
+          "500": {
+            "description": "An error occurred deleting todo"
+          }
+        }
+      }
+    },
+    "/lists": {
+      "post": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Add new list item",
+        "description": "Add new list item",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addListRequest"
+              },
+              "example": {
+                "title": "Backlog"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "List added successfully",
+                  "data" : {
+                    "title": "Backlog",
+                    "_id_": "FvHduuG3mZFPfG10HRDkEXH7mk2283J4",
+                    "_ts_": 1608492061069
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred adding list"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Get all lists",
+        "description": "Get all lists",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "Lists fetched successfully.",
+                  "data" : [
+                    {
+                      "title": "test1",
+                      "_id_": "McZmspyr77QznTuO26cRDDlMpDJGEHZh",
+                      "_ts_": 1608364687253
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred fetching lists"
+          }
+        }
+      }
+    },
+    "/lists/{listId}": {
+      "delete": {
+        "tags": [
+          "Lists"
+        ],
+        "summary": "Delete list",
+        "description": "Delete list",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "description": "Id of list to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "List deleted successfully.",
+                  "data" : {}
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "List with the given id does not exist"
+          },
+          "500": {
+            "description": "An error occurred deleting list"
+          }
+        }
+      }
+    },
+    "/reports/tasks-completed-per-day": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Get task completed by day report",
+        "description": "Get task completed by day report",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "Report fetched successfully.",
+                  "data" : [
+                    {
+                      "date": "2020-12-20",
+                      "total": 1,
+                      "updatedDateTime": 1608487814579,
+                      "_id_": "LgzdREkABJ7uPuFeGHSQZwQqMvxUJVqq",
+                      "_ts_": 1608487814581
+                    },
+                    {
+                      "date": "2020-12-19",
+                      "total": 0,
+                      "updatedDateTime": 1608487814579,
+                      "_id_": "jCHijlVSzmjF63Jiz9EyEquYJa4iLLie",
+                      "_ts_": 1608487814581
+                    },
+                    {
+                      "date": "2020-12-18",
+                      "total": 0,
+                      "updatedDateTime": 1608487814579,
+                      "_id_": "cPtp64zXkSa49mZaBIra4qWV2GYWSwSr",
+                      "_ts_": 1608487814582
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred fetching report"
           }
         }
       }
@@ -173,55 +409,56 @@
   },
   "components": {
     "schemas": {
-      "userLoginRequest": {
+      "addTodoRequest": {
         "type": "object",
         "required": [
-          "email",
-          "password"
+          "listId",
+          "title",
+          "description",
+          "dueDateTime"
         ],
         "properties": {
-          "email": {
+          "listId": {
             "type": "string"
           },
-          "password": {
+          "title": {
             "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "dueDateTime": {
+            "type": "number"
           }
         }
       },
-      "userSignupRequest": {
+      "updateTodoRequest": {
         "type": "object",
-        "required": [
-          "name",
-          "email",
-          "password",
-          "gender"
-        ],
         "properties": {
-          "name": {
+          "listId": {
             "type": "string"
           },
-          "email": {
+          "title": {
             "type": "string"
           },
-          "password": {
+          "description": {
             "type": "string"
           },
-          "gender": {
-            "type": "string"
+          "dueDateTime": {
+            "type": "number"
+          },
+          "completionStatus": {
+            "type": "number"
           }
         }
       },
-      "userVerifyRequest": {
+      "addListRequest": {
         "type": "object",
         "required": [
-          "email",
-          "key"
+          "title"
         ],
         "properties": {
-          "email": {
-            "type": "string"
-          },
-          "key": {
+          "title": {
             "type": "string"
           }
         }
@@ -241,39 +478,32 @@
       }
     },
     "requestBodies": {
-      "userLogin": {
+      "addTodo": {
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/userLoginRequest"
+              "$ref": "#/components/schemas/addTodoRequest"
             }
           }
         }
       },
-      "userSignup": {
+      "updateTodo": {
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/userSignupRequest"
+              "$ref": "#/components/schemas/updateTodoRequest"
             }
           }
         }
       },
-      "userVerify": {
+      "addList": {
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/userVerifyRequest"
+              "$ref": "#/components/schemas/addListRequest"
             }
           }
         }
-      }
-    },
-    "securitySchemes": {
-      "x-auth-token": {
-        "type": "apiKey",
-        "name": "x-auth-token",
-        "in": "header"
       }
     }
   },

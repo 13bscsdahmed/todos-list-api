@@ -49,7 +49,7 @@ const addTodo = (todo, reqId) => {
         const addedTodo = Todos.get(key);
         resolve(addedTodo);
       } else {
-        reject({ msgCode: '1001', status: 400 });
+        reject({ msgCode: '1001', status: 404 });
       }
     } catch (err) {
       winston.error(`ReqId: [${reqId}] An error occurred adding todo. Error: ${JSON.stringify(err)}`);
