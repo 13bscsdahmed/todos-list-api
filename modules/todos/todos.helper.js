@@ -151,9 +151,10 @@ const uploadAttachment = (todoId, filename, reqId) => {
     try {
       const todo = Todos.get(todoId);
       if (todo) {
-        todo.attachments.push(filename);
+        const attachmentToUpdate = JSON.parse(JSON.stringify(todo.attachments));
+        attachmentToUpdate.push(filename);
         updatedTodo = Todos.update(todoId, {
-          attachments: todo.attachments,
+          attachments: attachmentToUpdate,
         });
         resolve(Todos.get(todoId));
       } else {
