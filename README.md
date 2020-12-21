@@ -25,3 +25,10 @@ Once the API server is running, the swagger documentation can be found at
 ````
 http://localhost:3000/api-docs
 ````
+
+
+## Postman collection
+You can import postman collection from the following link
+````
+https://www.getpostman.com/collections/cc7748a6741e82321e97
+````
