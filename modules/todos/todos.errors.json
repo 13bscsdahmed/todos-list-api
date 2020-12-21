@@ -16,5 +16,8 @@
   },
   "1006": {
     "msg": "An error occurred deleting todo"
+  },
+  "1007": {
+    "msg": "An error occurred uploading attachment"
   }
 }

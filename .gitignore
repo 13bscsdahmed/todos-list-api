@@ -31,3 +31,4 @@ testem.log
 /e2e/*.map
 
 storage
+static-assets

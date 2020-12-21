@@ -85,4 +85,25 @@ module.exports = {
       next(error);
     });
   },
+  /**
+   * Controller function to upload attachment
+   * @param req
+   * @param res
+   * @param next
+   */
+  uploadAttachment(req, res, next) {
+    const { todoId } = req.params;
+    console.log(req.file);
+    todosHelper.uploadAttachment(todoId, req.file.filename, req.reqId).then((updatedTodo) => {
+      winston.info(`ReqId: [${req.reqId}] Successfully uploaded attachment of todo with id: ${todoId}`);
+      res.json({
+        success: 1,
+        message: responseMessages.attachmentUploaded.success,
+        data: updatedTodo,
+      });
+    }).catch((error) => {
+      winston.error(`ReqId: [${req.reqId}] An error occurred uploaded attachment of todo with id: ${todoId}. Error: ${JSON.stringify(error)}`);
+      next(error);
+    });
+  },
 };

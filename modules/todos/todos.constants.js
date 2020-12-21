@@ -12,5 +12,8 @@ module.exports = {
     todosFetched: {
       success: 'Todos fetched successfully.',
     },
+    attachmentUploaded: {
+      success: 'Attachment uploaded successfully.',
+    },
   },
 };

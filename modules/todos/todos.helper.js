@@ -138,9 +138,38 @@ const getAllTodos = (reqId) => {
   });
 };
 
+/**
+ * Helper function to upload attachment
+ * @param {string} [todoId] - Id of todo
+ * @param {Object} [filename] - Name of file
+ * @param {string} [reqId] - request id
+ */
+const uploadAttachment = (todoId, filename, reqId) => {
+  winston.debug(`ReqId: [${reqId}] uploadAttachment() method starts`);
+  let updatedTodo;
+  return new Promise((resolve, reject) => {
+    try {
+      const todo = Todos.get(todoId);
+      if (todo) {
+        todo.attachments.push(filename);
+        updatedTodo = Todos.update(todoId, {
+          attachments: todo.attachments,
+        });
+        resolve(Todos.get(todoId));
+      } else {
+        reject({ msgCode: '1002', status: 404 });
+      }
+    } catch (err) {
+      winston.error(`ReqId: [${reqId}] An error occurred uploading attachment. Error: ${JSON.stringify(err)}`);
+      reject({ msgCode: '1007', status: 500 });
+    }
+  });
+};
+
 module.exports = {
   addTodo,
   updateTodo,
   deleteTodo,
   getAllTodos,
+  uploadAttachment,
 };

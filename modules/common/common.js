@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 // Common utility functions that can be used by all modules.
 module.exports = {
   /**
@@ -38,5 +40,30 @@ module.exports = {
   getDateFromTimestamp(timestamp) {
     const date = new Date(timestamp);
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  },
+  /**
+   * Checks and creates a new directory if it does not already exist and returns a promise.
+   * @param {String} dirPath The path of the directory that is to be created.
+   * @returns {Promise}
+   */
+  createDirectory(dirPath) {
+    return new Promise((resolve, reject) => {
+      // Check if the folder already exists.
+      fs.access(dirPath, fs.constants.F_OK, (err) => {
+        if (err && err.code === 'EEXIST') { // If directory already exists.
+          return resolve();
+        }
+        if (err && err.code !== 'ENOENT') { // If there is some error other then directory does not exist.
+          return reject();
+        }
+        // Create the new folder.
+        return fs.mkdir(dirPath, (error) => {
+          if (error && error.code !== 'EEXIST') {
+            return reject(error);
+          }
+          return resolve();
+        });
+      });
+    });
   },
 };

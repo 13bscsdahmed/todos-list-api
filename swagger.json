@@ -231,6 +231,67 @@
         }
       }
     },
+    "/todos/{todoId}/attachments": {
+      "post": {
+        "tags": [
+          "Todos"
+        ],
+        "summary": "Uploads todo attachments",
+        "description": "Uploads todo attachments",
+        "parameters": [
+          {
+            "name": "todoId",
+            "in": "path",
+            "required": true,
+            "description": "Id of the todo",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/genericResponse"
+                },
+                "example": {
+                  "success": 1,
+                  "message": "Todo attachment uploaded successfully.",
+                  "data" : {}
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Todo with id does not exist"
+          },
+          "500": {
+            "description": "An error occurred uploading attachment"
+          }
+        }
+      }
+    },
     "/lists": {
       "post": {
         "tags": [
