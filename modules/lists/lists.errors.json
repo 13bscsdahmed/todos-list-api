@@ -1,0 +1,14 @@
+{
+  "2001": {
+    "msg": "An error occurred fetching lists"
+  },
+  "2002": {
+    "msg": "An error occurred adding list"
+  },
+  "2003": {
+    "msg": "An error occurred deleting list"
+  },
+  "2004": {
+    "msg": "List with the given id does not exist"
+  }
+}

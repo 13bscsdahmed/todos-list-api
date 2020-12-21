@@ -1,11 +1,13 @@
 const { check } = require('express-validator/check');
-const common = require('../common/common');
 
 module.exports = {
-  validateLoginParameters: [
-    check('email', '1002').exists(),
-    check('email', '1003').custom(common.emailValidator),
-    check('password', '1003').exists(),
-    check('password', '1005').custom(common.passwordValidator),
+  validateAddTodoParameters: [
+    check('listId', '0001').exists(),
+    check('title', '0001').exists(),
+    check('description', '0001').exists(),
+    check('dueDateTime', '1003').exists(),
+  ],
+  validateUpdateTodoParameters: [
+    check('attachments', '0002').optional().isArray(),
   ],
 };

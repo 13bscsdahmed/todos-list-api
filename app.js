@@ -5,6 +5,10 @@ const http = require('http');
 const uuid = require('uuid/v4');
 const winston = require('./config/winston');
 const constants = require('./config/constants');
+const common = require('./modules/common/common');
+const path = require('path');
+
+const FlatDB = require('flat-db');
 
 // Configuring the environment
 require('dotenv').config({
@@ -12,6 +16,9 @@ require('dotenv').config({
 });
 
 const app = express();
+
+// Configuring static directory to serve files
+app.use(express.static(path.join(constants.paths.staticAssetsDirectory)));
 
 const port = process.env.PORT || 3000;
 
@@ -48,6 +55,12 @@ app.use((req, res, next) => {
   }
 });
 
+
+// Configuring flat db
+FlatDB.configure({
+  dir: './storage',
+});
+
 // Configuring the request to append a unique id.
 app.use((req, res, next) => {
   req.reqId = uuid();
@@ -73,8 +86,13 @@ const onError = (error) => {
 const onListening = () => {
   winston.info(`Server started on port: '${port}'`);
 };
-// Creating server
-const server = http.createServer(app);
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+// Creating static assets dir and server
+common.createDirectory(constants.paths.staticAssetsDirectory).then(() => {
+  const server = http.createServer(app);
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+}).catch((error) => {
+  winston.error(`An error occurred while starting server: ${error}`);
+});
+

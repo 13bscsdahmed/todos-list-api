@@ -1,7 +1,19 @@
 module.exports = {
   responseMessages: {
-    login: {
-      success: 'User logged in successfully.',
+    todoAdded: {
+      success: 'Todo added successfully.',
+    },
+    todoUpdated: {
+      success: 'Todo updated successfully.',
+    },
+    todoDeleted: {
+      success: 'Todo deleted successfully.',
+    },
+    todosFetched: {
+      success: 'Todos fetched successfully.',
+    },
+    attachmentUploaded: {
+      success: 'Attachment uploaded successfully.',
     },
   },
 };
